@@ -1,0 +1,27 @@
+name: Notify on Push
+
+on:
+  push:
+    branches:
+      - main
+      - feature_a
+      - feature_b
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send email notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "Cambios subidos a rama ${{ github.ref_name }}"
+          to: malop1237@gmail.com
+          from: ${{ secrets.MAIL_USERNAME }}
+          body: |
+            Se realizó un push a la rama: ${{ github.ref_name }}
+            Repositorio: ${{ github.repository }}
+            Por: ${{ github.actor }}
